@@ -13,10 +13,20 @@ type List[T any] struct {
 }
 
 func (l List[T]) Front() T {
+
+	if l.Empty() {
+		panic("cannot retrieve front value, list is empty")
+	}
+
 	return l.head.value
 }
 
 func (l List[T]) Back() T {
+
+	if l.Empty() {
+		panic("cannot retrieve back value, list is empty")
+	}
+
 	return l.tail.value
 }
 
@@ -30,11 +40,10 @@ func (l List[T]) Empty() bool {
 
 func (l *List[T]) PushFront(value T) {
 
-	defer func() { l.size++ }()
-
 	if l.head == nil {
 		l.head = &listNode[T]{value: value}
 		l.tail = l.head
+		l.size++
 		return
 	}
 
@@ -43,6 +52,7 @@ func (l *List[T]) PushFront(value T) {
 		l.head = newNode
 		l.head.next = l.tail
 		l.tail.prev = l.head
+		l.size++
 		return
 	}
 
@@ -51,15 +61,15 @@ func (l *List[T]) PushFront(value T) {
 	newNode.next = temp
 	temp.prev = newNode
 	l.head = newNode
+	l.size++
 }
 
 func (l *List[T]) PushBack(value T) {
 
-	defer func() { l.size++ }()
-
 	if l.head == nil {
 		l.head = &listNode[T]{value: value}
 		l.tail = l.head
+		l.size++
 		return
 	}
 
@@ -68,6 +78,7 @@ func (l *List[T]) PushBack(value T) {
 		l.tail = newNode
 		l.head.next = l.tail
 		l.tail.prev = l.head
+		l.size++
 		return
 	}
 
@@ -76,38 +87,39 @@ func (l *List[T]) PushBack(value T) {
 	newNode.prev = temp
 	temp.next = newNode
 	l.tail = newNode
+	l.size++
 }
 
 func (l *List[T]) PopFront() {
 
-	defer func() {
-		if l.size > 0 {
-			l.size--
-		}
-	}()
+	if l.Empty() {
+		panic("cannot pop front value, list is empty")
+	}
 
 	if l.size == 1 {
 		l.head = nil
 		l.tail = nil
+		l.size--
 		return
 	}
 
 	l.head = l.head.next
+	l.size--
 }
 
 func (l *List[T]) PopBack() {
 
-	defer func() {
-		if l.size > 0 {
-			l.size--
-		}
-	}()
+	if l.Empty() {
+		panic("cannot pop back value, list is empty")
+	}
 
 	if l.size == 1 {
 		l.head = nil
 		l.tail = nil
+		l.size--
 		return
 	}
 
 	l.tail = l.tail.prev
+	l.size--
 }
