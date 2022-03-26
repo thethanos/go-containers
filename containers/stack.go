@@ -8,7 +8,7 @@ func (s *Stack[T]) Push(value T) {
 	s.data = append(s.data, value)
 }
 
-func (s *Stack[T]) Size() int {
+func (s Stack[T]) Size() int {
 	return len(s.data)
 }
 
