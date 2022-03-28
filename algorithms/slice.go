@@ -31,6 +31,7 @@ func CountIf[T comparable](data []T, predicate func(value T) bool) int {
 }
 
 // finds the given value in the given slice
+// returns -1 if nothing found or the slice is empty
 func Find[T comparable](data []T, value T) int {
 
 	for i := range data {
@@ -43,6 +44,7 @@ func Find[T comparable](data []T, value T) int {
 }
 
 // finds a value satisfying the given predicate in the given slice
+// returns -1 if nothing found or the slice is empty
 func FindIf[T any](data []T, predicate func(value T) bool) int {
 
 	for i := range data {
@@ -54,39 +56,42 @@ func FindIf[T any](data []T, predicate func(value T) bool) int {
 	return -1
 }
 
-// finds a maximal value in the given slice
-func MaxElement[T constraints.Ordered](data []T) T {
+// finds a maximal value in the given slice and returns its index
+// returns -1 if the slice is empty
+func MaxElement[T constraints.Ordered](data []T) int {
 
-	var max T
 	if len(data) == 0 {
-		return max
+		return -1
 	}
 
-	max = data[0]
+	maxIndex := -1
+	maxValue := data[0]
 	for i := range data {
-		if data[i] > max {
-			max = data[i]
+		if data[i] > maxValue {
+			maxIndex = i
+			maxValue = data[i]
 		}
 	}
 
-	return max
-
+	return maxIndex
 }
 
-// finds a minimal value in the given slice
-func MinElement[T constraints.Ordered](data []T) T {
+// finds a minimal value in the given slice and returns its index
+// returns -1 if the slice is empty
+func MinElement[T constraints.Ordered](data []T) int {
 
-	var min T
 	if len(data) == 0 {
-		return min
+		return -1
 	}
 
-	min = data[0]
+	minIndex := -1
+	minValue := data[0]
 	for i := range data {
-		if data[i] < min {
-			min = data[i]
+		if data[i] < minValue {
+			minIndex = i
+			minValue = data[i]
 		}
 	}
 
-	return min
+	return minIndex
 }
