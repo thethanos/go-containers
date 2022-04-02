@@ -2,14 +2,14 @@ package containers
 
 // for max heap returns left > right
 // for min heap returns left < right
-type Comparator[T any] func(left, right T) bool
+type сomparator[T any] func(left, right T) bool
 
 type Heap[T any] struct {
 	data []T
-	cmp  Comparator[T]
+	cmp  сomparator[T]
 }
 
-func NewHeap[T any](cmp Comparator[T]) Heap[T] {
+func NewHeap[T any](cmp сomparator[T]) Heap[T] {
 	return Heap[T]{cmp: cmp}
 }
 
