@@ -1,7 +1,5 @@
 package containers
 
-// for max heap returns left > right
-// for min heap returns left < right
 type сomparator[T any] func(left, right T) bool
 
 type Heap[T any] struct {
@@ -9,6 +7,9 @@ type Heap[T any] struct {
 	cmp  сomparator[T]
 }
 
+// Accepts type сomparator[T any] func(left, right T) bool.
+// For max heap comparator returns left > right.
+// For min heap comparator returns left < right.
 func NewHeap[T any](cmp сomparator[T]) Heap[T] {
 	return Heap[T]{cmp: cmp}
 }
@@ -25,7 +26,7 @@ func (h *Heap[T]) Push(value T) {
 	}
 }
 
-// adds slice data to the heap
+// Adds slice data to the heap.
 func (h *Heap[T]) PushSlice(slice []T) {
 
 	h.data = append(h.data, slice...)
