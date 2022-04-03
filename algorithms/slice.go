@@ -4,7 +4,7 @@ import (
 	"golang.org/x/exp/constraints"
 )
 
-// counts all occurrences of the given value in the given slice
+// Counts all occurrences of the given value in the given slice.
 func Count[T comparable](data []T, value T) int {
 
 	res := 0
@@ -17,7 +17,7 @@ func Count[T comparable](data []T, value T) int {
 	return res
 }
 
-// counts all occurrences of values satisfying the given predicate in the given slice
+// Counts all occurrences of values satisfying the given predicate in the given slice.
 func CountIf[T comparable](data []T, predicate func(value T) bool) int {
 
 	res := 0
@@ -30,68 +30,64 @@ func CountIf[T comparable](data []T, predicate func(value T) bool) int {
 	return res
 }
 
-// finds the given value in the given slice
-// returns -1 if nothing found or the slice is empty
-func Find[T comparable](data []T, value T) int {
+// Finds the given value in the given slice, returns true if it is found.
+// Returns false if nothing found or the slice is empty.
+func Find[T comparable](data []T, value T) bool {
 
 	for i := range data {
 		if data[i] == value {
-			return i
+			return true
 		}
 	}
 
-	return -1
+	return false
 }
 
-// finds a value satisfying the given predicate in the given slice
-// returns -1 if nothing found or the slice is empty
-func FindIf[T any](data []T, predicate func(value T) bool) int {
+// Finds a value satisfying the given predicate in the given slice and returns it.
+// Returns defaultValue if nothing found or the slice is empty.
+func FindIf[T any](data []T, defaultValue T, predicate func(value T) bool) T {
 
-	for i := range data {
-		if predicate(data[i]) {
-			return i
+	for _, value := range data {
+		if predicate(value) {
+			return value
 		}
 	}
 
-	return -1
+	return defaultValue
 }
 
-// finds a maximal value in the given slice and returns its index
-// returns -1 if the slice is empty
-func MaxElement[T constraints.Ordered](data []T) int {
+// Finds a maximal value in the given slice and returns it.
+// Returns defaultValue if the slice is empty
+func MaxElement[T constraints.Ordered](data []T, defaultValue T) T {
 
 	if len(data) == 0 {
-		return -1
+		return defaultValue
 	}
 
-	maxIndex := -1
 	maxValue := data[0]
 	for i := range data {
 		if data[i] > maxValue {
-			maxIndex = i
 			maxValue = data[i]
 		}
 	}
 
-	return maxIndex
+	return defaultValue
 }
 
-// finds a minimal value in the given slice and returns its index
-// returns -1 if the slice is empty
-func MinElement[T constraints.Ordered](data []T) int {
+// Finds a minimal value in the given slice and returns it.
+// Returns defaultValue if the slice is empty
+func MinElement[T constraints.Ordered](data []T, defaultValue T) T {
 
 	if len(data) == 0 {
-		return -1
+		return defaultValue
 	}
 
-	minIndex := -1
 	minValue := data[0]
 	for i := range data {
 		if data[i] < minValue {
-			minIndex = i
 			minValue = data[i]
 		}
 	}
 
-	return minIndex
+	return minValue
 }
