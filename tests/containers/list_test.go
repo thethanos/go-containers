@@ -16,7 +16,7 @@ type testType struct {
 
 func TestPushFrontInt(t *testing.T) {
 
-	lst := containers.List[int]{}
+	lst := containers.NewList[int]()
 	for i := 0; i < inputSize; i++ {
 		lst.PushFront(i)
 
@@ -32,7 +32,7 @@ func TestPushFrontInt(t *testing.T) {
 
 func TestPushFrontStruct(t *testing.T) {
 
-	lst := containers.List[testType]{}
+	lst := containers.NewList[testType]()
 	for i := 0; i < inputSize; i++ {
 		lst.PushFront(testType{value: i})
 
@@ -48,7 +48,7 @@ func TestPushFrontStruct(t *testing.T) {
 
 func TestPushFrontPointer(t *testing.T) {
 
-	lst := containers.List[*testType]{}
+	lst := containers.NewList[*testType]()
 	for i := 0; i < inputSize; i++ {
 		lst.PushFront(&testType{value: i})
 
@@ -65,7 +65,7 @@ func TestPushFrontPointer(t *testing.T) {
 
 func TestPushBackInt(t *testing.T) {
 
-	lst := containers.List[int]{}
+	lst := containers.NewList[int]()
 	for i := 0; i < inputSize; i++ {
 		lst.PushBack(i)
 
@@ -81,7 +81,7 @@ func TestPushBackInt(t *testing.T) {
 
 func TestPushBackStruct(t *testing.T) {
 
-	lst := containers.List[testType]{}
+	lst := containers.NewList[testType]()
 	for i := 0; i < inputSize; i++ {
 		lst.PushBack(testType{value: i})
 
@@ -97,7 +97,7 @@ func TestPushBackStruct(t *testing.T) {
 
 func TestPushBackPointer(t *testing.T) {
 
-	lst := containers.List[*testType]{}
+	lst := containers.NewList[*testType]()
 	for i := 0; i < inputSize; i++ {
 		lst.PushBack(&testType{value: i})
 
@@ -113,7 +113,7 @@ func TestPushBackPointer(t *testing.T) {
 
 func TestPopFront(t *testing.T) {
 
-	lst := containers.List[int]{}
+	lst := containers.NewList[int]()
 	for i := 0; i < inputSize; i++ {
 		lst.PushFront(i)
 	}
@@ -135,7 +135,7 @@ func TestPopFront(t *testing.T) {
 
 func TestPopBack(t *testing.T) {
 
-	lst := containers.List[int]{}
+	lst := containers.NewList[int]()
 	for i := 0; i < inputSize; i++ {
 		lst.PushBack(i)
 	}

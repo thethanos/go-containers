@@ -8,7 +8,7 @@ import (
 
 var inputData = []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
 
-func TestPushInt(t *testing.T) {
+func TestHeapPushInt(t *testing.T) {
 
 	heap := containers.NewHeap(func(i, j int) bool { return i > j })
 
@@ -25,7 +25,7 @@ func TestPushInt(t *testing.T) {
 	}
 }
 
-func TestPushStruct(t *testing.T) {
+func TestHeapPushStruct(t *testing.T) {
 
 	heap := containers.NewHeap(func(i, j testType) bool { return i.value > j.value })
 
@@ -42,7 +42,7 @@ func TestPushStruct(t *testing.T) {
 	}
 }
 
-func TestPushSlice(t *testing.T) {
+func TestHeapPushSlice(t *testing.T) {
 
 	heap := containers.NewHeap(func(i, j int) bool { return i > j })
 	heap.PushSlice(inputData)
@@ -52,7 +52,7 @@ func TestPushSlice(t *testing.T) {
 	}
 }
 
-func TestPop(t *testing.T) {
+func TestHeapPop(t *testing.T) {
 
 	heap := containers.NewHeap(func(i, j int) bool { return i > j })
 	heap.PushSlice(inputData)

@@ -1,15 +1,13 @@
 package containers
 
-type listNode[T any] struct {
-	next  *listNode[T]
-	prev  *listNode[T]
-	value T
-}
-
 type List[T any] struct {
 	head *listNode[T]
 	tail *listNode[T]
 	size int64
+}
+
+func NewList[T any]() List[T] {
+	return List[T]{head: nil, tail: nil, size: 0}
 }
 
 func (l List[T]) Front() T {
@@ -122,4 +120,10 @@ func (l *List[T]) PopBack() {
 
 	l.tail = l.tail.prev
 	l.size--
+}
+
+type listNode[T any] struct {
+	next  *listNode[T]
+	prev  *listNode[T]
+	value T
 }
