@@ -2,7 +2,7 @@ package algorithms
 
 import "golang.org/x/exp/constraints"
 
-// Returns minimal value
+// Returns the minimum of two values
 func Min[T constraints.Ordered](first, second T) T {
 
 	if first <= second {
@@ -12,7 +12,7 @@ func Min[T constraints.Ordered](first, second T) T {
 	return second
 }
 
-// Returns maxmimal value
+// Returns the maxmimum of two values
 func Max[T constraints.Ordered](first, second T) T {
 
 	if first >= second {
