@@ -56,6 +56,14 @@ func FindIf[T any](data []T, defaultValue T, predicate func(value T) bool) T {
 	return defaultValue
 }
 
+// Fills the given slice with the given value
+func Fill[T any](data []T, value T) {
+
+	for i := range data {
+		data[i] = value
+	}
+}
+
 // Finds a maximal value in the given slice and returns it.
 // Returns defaultValue if the slice is empty
 func MaxElement[T constraints.Ordered](data []T, defaultValue T) T {
@@ -71,7 +79,7 @@ func MaxElement[T constraints.Ordered](data []T, defaultValue T) T {
 		}
 	}
 
-	return defaultValue
+	return maxValue
 }
 
 // Finds a minimal value in the given slice and returns it.
