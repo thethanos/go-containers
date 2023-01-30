@@ -1,21 +1,17 @@
 package containers
 
-import "errors"
-
 type сomparator[T any] func(left, right T) bool
-type finder[T any] func(val T) bool
 
 type Heap[T any] struct {
-	data   []T
-	cmp    сomparator[T]
-	finder finder[T]
+	data []T
+	cmp  сomparator[T]
 }
 
 // Accepts type сomparator[T any] func(left, right T) bool.
 // For max heap comparator returns left > right.
 // For min heap comparator returns left < right.
-func NewHeap[T any](cmp сomparator[T], fnd finder[T]) Heap[T] {
-	return Heap[T]{cmp: cmp, finder: fnd}
+func NewHeap[T any](cmp сomparator[T]) Heap[T] {
+	return Heap[T]{cmp: cmp}
 }
 
 func (h *Heap[T]) Push(value T) {
@@ -30,22 +26,46 @@ func (h *Heap[T]) Push(value T) {
 	}
 }
 
-func (h *Heap[T]) Extract() error {
+// item T - item to delete
+// at least the field to be checked in cmp  must be filled
+//
+// cmp comparator[T] - comparator
+// if nil - default comparator is used
+func (h *Heap[T]) Extract(item T, cmp сomparator[T]) T {
 	if h.Empty() {
-		return errors.New("cannot extract value, heap is empty")
+		panic("cannot extract value, heap is empty")
 	}
-	for index, element := range h.data {
-		if h.finder(element) && index == 0 {
-			h.Pop()
-			return nil
-		}
 
-		if h.finder(element) {
+	if cmp == nil {
+		cmp = h.cmp
+	}
+
+	for index, element := range h.data {
+		if !cmp(item, element) && !cmp(element, item) {
 			h.remove(index)
-			return nil
+			h.heapify(0)
+			return element
 		}
 	}
-	return errors.New("cannot extract: no such value")
+	panic("cannot extract value, no such element in heap")
+}
+
+// item T - item to check
+// at least the field to be checked in cmp must be filled
+//
+// cmp comparator[T] - comparator
+// if nil - default comparator is used
+func (h Heap[T]) Contains(item T, cmp сomparator[T]) bool {
+	if cmp == nil {
+		cmp = h.cmp
+	}
+
+	for _, element := range h.data {
+		if !cmp(item, element) && !cmp(element, item) {
+			return true
+		}
+	}
+	return false
 }
 
 // Adds slice data to the heap.
