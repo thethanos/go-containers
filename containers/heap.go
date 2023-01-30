@@ -1,17 +1,21 @@
 package containers
 
+import "errors"
+
 type сomparator[T any] func(left, right T) bool
+type finder[T any] func(val T) bool
 
 type Heap[T any] struct {
-	data []T
-	cmp  сomparator[T]
+	data   []T
+	cmp    сomparator[T]
+	finder finder[T]
 }
 
 // Accepts type сomparator[T any] func(left, right T) bool.
 // For max heap comparator returns left > right.
 // For min heap comparator returns left < right.
-func NewHeap[T any](cmp сomparator[T]) Heap[T] {
-	return Heap[T]{cmp: cmp}
+func NewHeap[T any](cmp сomparator[T], fnd finder[T]) Heap[T] {
+	return Heap[T]{cmp: cmp, finder: fnd}
 }
 
 func (h *Heap[T]) Push(value T) {
@@ -24,6 +28,24 @@ func (h *Heap[T]) Push(value T) {
 			h.swap(index, h.parent(index))
 		}
 	}
+}
+
+func (h *Heap[T]) Extract() error {
+	if h.Empty() {
+		return errors.New("cannot extract value, heap is empty")
+	}
+	for index, element := range h.data {
+		if h.finder(element) && index == 0 {
+			h.Pop()
+			return nil
+		}
+
+		if h.finder(element) {
+			h.remove(index)
+			return nil
+		}
+	}
+	return errors.New("cannot extract: no such value")
 }
 
 // Adds slice data to the heap.
@@ -50,9 +72,7 @@ func (h *Heap[T]) Pop() {
 		panic("cannot pop top value, heap is empty")
 	}
 
-	h.swap(0, h.Size()-1)
-	h.data = h.data[:h.Size()-1]
-
+	h.remove(0)
 	h.heapify(0)
 }
 
@@ -70,6 +90,11 @@ func (h Heap[T]) parent(index int) int {
 
 func (h Heap[T]) swap(i, j int) {
 	h.data[i], h.data[j] = h.data[j], h.data[i]
+}
+
+func (h *Heap[T]) remove(i int) {
+	h.swap(i, h.Size()-1)
+	h.data = h.data[:h.Size()-1]
 }
 
 func (h *Heap[T]) heapify(index int) {
