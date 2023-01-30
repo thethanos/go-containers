@@ -26,6 +26,48 @@ func (h *Heap[T]) Push(value T) {
 	}
 }
 
+// item T - item to delete
+// at least the field to be checked in cmp  must be filled
+//
+// cmp comparator[T] - comparator
+// if nil - default comparator is used
+func (h *Heap[T]) Extract(item T, cmp сomparator[T]) T {
+	if h.Empty() {
+		panic("cannot extract value, heap is empty")
+	}
+
+	if cmp == nil {
+		cmp = h.cmp
+	}
+
+	for index, element := range h.data {
+		if !cmp(item, element) && !cmp(element, item) {
+			h.remove(index)
+			h.heapify(0)
+			return element
+		}
+	}
+	panic("cannot extract value, no such element in heap")
+}
+
+// item T - item to check
+// at least the field to be checked in cmp must be filled
+//
+// cmp comparator[T] - comparator
+// if nil - default comparator is used
+func (h Heap[T]) Contains(item T, cmp сomparator[T]) bool {
+	if cmp == nil {
+		cmp = h.cmp
+	}
+
+	for _, element := range h.data {
+		if !cmp(item, element) && !cmp(element, item) {
+			return true
+		}
+	}
+	return false
+}
+
 // Adds slice data to the heap.
 func (h *Heap[T]) PushSlice(slice []T) {
 
@@ -50,9 +92,7 @@ func (h *Heap[T]) Pop() {
 		panic("cannot pop top value, heap is empty")
 	}
 
-	h.swap(0, h.Size()-1)
-	h.data = h.data[:h.Size()-1]
-
+	h.remove(0)
 	h.heapify(0)
 }
 
@@ -70,6 +110,11 @@ func (h Heap[T]) parent(index int) int {
 
 func (h Heap[T]) swap(i, j int) {
 	h.data[i], h.data[j] = h.data[j], h.data[i]
+}
+
+func (h *Heap[T]) remove(i int) {
+	h.swap(i, h.Size()-1)
+	h.data = h.data[:h.Size()-1]
 }
 
 func (h *Heap[T]) heapify(index int) {
